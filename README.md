@@ -1,2 +1,2 @@
-# Monopolizr
-An AI Monopoly Player.
+# Poker AI
+An AI Poker Player.
