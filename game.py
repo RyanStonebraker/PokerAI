@@ -1,4 +1,6 @@
+import itertools
 import random
+from player import Player
 
 class Game:
     def __init__(self, *players):
@@ -17,7 +19,7 @@ class Game:
             for player in self.players:
                 if player.folded:
                     continue
-                move = player.makeMove(self.visibleCards, self.currentBet, self.potValue, self.betHistory)
+                move = player.makeMove(self.visibleCards, currentBet, self.potValue, self.betHistory)
                 if move[0] == "fold":
                     continue
                 elif move[0] == "call":
@@ -28,7 +30,7 @@ class Game:
                 self.betHistory.append({
                     "id": player.getID(),
                     "move": move[0],
-                    "currentBet": self.currentBet,
+                    "currentBet": currentBet,
                     "potValue": self.potValue,
                     "visibleCards": self.visibleCards
                 })
@@ -43,7 +45,7 @@ class Game:
         self.visibleCards.append(randomCard)
 
     def dealTwoCards(self):
-        return [self.generateRandomCard(), self.generateRandomCard()]
+        return (self.generateRandomCard(), self.generateRandomCard())
 
     def generateRandomCard(self):
         chosenIndex = random.randint(0, len(self.possibleCards)-1)
@@ -60,7 +62,7 @@ class Game:
                 topScore = playerScore
                 winner = player.getID()
 
-    def evaluateHand(self):
+    def evaluateHand(self, player):
         # TODO: Evaluate a single poker hand
         return 5
 
@@ -75,3 +77,10 @@ class Game:
         "AH", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "10H", "JH", "QH", "KH",
         "AS", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS"
     ]
+
+if __name__ == "__main__":
+    player1 = Player()
+    player2 = Player()
+    player3 = Player()
+    pokerGame = Game(player1, player2, player3)
+    pokerGame.play()
