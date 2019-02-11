@@ -87,4 +87,5 @@ if __name__ == "__main__":
     player2 = Player(1000)
     player3 = Player(1000)
     pokerGame = Game(player1, player2, player3)
-    pokerGame.play()
+    winner = pokerGame.play()
+    print("\n\nWinner: Player", winner)
