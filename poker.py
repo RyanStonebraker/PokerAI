@@ -1,44 +1,67 @@
-# import pygame
-# from pygame.locals import *
 from pokerPlayer import PokerPlayer
 from hand import Hand
 import keyboard
 
-# gameRunning = True
-#
-# pygame.init()
-# textFont = pygame.font.SysFont(None, 30)
-#
-# clock = pygame.time.Clock()
-# screen = pygame.display.set_mode((800,600))
-# pygame.display.set_caption("Poker AI")
-# screen.fill([255,255,255])
-# pygame.display.flip()
-
-visibleCards = Hand()
-
 player = PokerPlayer(1000, 1)
 opp = PokerPlayer(1000, 0)
+visibleCards = Hand([])
 
 totalBet = 0
 
 gameRunning = True
+folded = ""
 while gameRunning:
-    currentBet = 10
-    while not player.roundDone() and not opp.roundDone():
-        playerBet = player.bet(currentBet)
-        if playerBet:
-            currentBet = playerBet
+    print("Visible Cards:", visibleCards.showCards())
 
+    currentBet = 0
+    roundDone = False if folded == "" else True
+    calledCount = 0
+    while not roundDone:
+        print("Player ", end="")
+        playerBet = player.bet(currentBet)
+        if playerBet[1] == 0:
+            roundDone = True
+            folded = "Player"
+        elif playerBet[1] == 1:
+            calledCount += 1
+        elif playerBet[1] == 2:
+            currentBet = playerBet[0]
+            calledCount = 0
+
+        if calledCount >= 2 or roundDone:
+            break
+
+        print("Opp ", end="")
         oppBet = opp.bet(currentBet)
-        if oppBet:
-            currentBet = oppBet
+        if oppBet[1] == 0:
+            roundDone = True
+            folded = "Opp"
+        elif oppBet[1] == 1:
+            calledCount += 1
+        elif oppBet[1] == 2:
+            currentBet = oppBet[0]
+            calledCount = 0
+
+        if calledCount >= 2:
+            break
 
     totalBet += currentBet
+    if visibleCards.cardCount() >= 5:
+        if folded != "":
+            winner = "Player" if "Player" != folded else "Opp"
+        else:
+            playerScore = player.evaluateFullHand()
+            oppScore = opp.evaluateFullHand()
 
-    visibleCards.addCard()
+            winner = "Player" if playerScore > oppScore else "Opp"
 
-    print(visibleCards.showCards())
+        print("WINNER:", winner)
+        break
+    elif visibleCards.cardCount() < 5:
+        visibleCards.addCard()
+        player.addVisibleCards(visibleCards.showCards())
+        opp.addVisibleCards(visibleCards.showCards())
+
 
     try:
         if keyboard.is_pressed('q'):
@@ -47,22 +70,3 @@ while gameRunning:
             pass
     except:
         pass
-
-
-
-# while gameRunning:
-#     for event in pygame.event.get():
-#         if event.type == KEYDOWN:
-#             if event.key == K_q:
-#                 gameRunning = False
-#             if event.key == K_a:
-#                 if visibleCards.cardCount() < 5:
-#                     visibleCards.addCard()
-#                 print(visibleCards.showCards())
-#         elif event.type == QUIT:
-#             gameRunning = False
-#
-#     text = textFont.render('Some Text', True, (100, 100, 100))
-#     screen.blit(text, (800 - text.get_width() // 2, 600 - text.get_height() // 2))
-#     pygame.display.flip()
-#     clock.tick(60)

@@ -1,9 +1,13 @@
 import random
 
-class Hand():
+class Hand:
+    def __init__(self, cards=[]):
+        self.hand = cards
     def addCard(self):
         chosenIndex = random.randint(0, len(self.possibleCards)-1)
         self.hand.append(self.possibleCards[chosenIndex])
+    def addSpecificCard(self, card):
+        self.hand.append(card)
     def evaluateHand(self):
         return 5
     def cardCount(self):
