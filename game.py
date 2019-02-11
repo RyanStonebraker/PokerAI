@@ -31,8 +31,7 @@ class Game:
                     "id": player.getID(),
                     "move": move[0],
                     "currentBet": currentBet,
-                    "potValue": self.potValue,
-                    "visibleCards": self.visibleCards
+                    "potValue": self.potValue
                 })
             if len(self.visibleCards) < 5:
                 self.addVisibleCard()
@@ -79,8 +78,8 @@ class Game:
     ]
 
 if __name__ == "__main__":
-    player1 = Player()
-    player2 = Player()
-    player3 = Player()
+    player1 = Player(1000)
+    player2 = Player(1000)
+    player3 = Player(1000)
     pokerGame = Game(player1, player2, player3)
     pokerGame.play()
