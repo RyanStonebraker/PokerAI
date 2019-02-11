@@ -16,23 +16,28 @@ class Game:
             id += 1
         while self.stillBetting:
             currentBet = 10
-            for player in self.players:
-                if player.folded:
-                    continue
-                move = player.makeMove(self.visibleCards, currentBet, self.potValue, self.betHistory)
-                if move[0] == "fold":
-                    continue
-                elif move[0] == "call":
-                    self.potValue += move[1]
-                elif move[0] == "raise":
-                    currentBet = move[1]
-                    self.potValue += move[1]
-                self.betHistory.append({
-                    "id": player.getID(),
-                    "move": move[0],
-                    "currentBet": currentBet,
-                    "potValue": self.potValue
-                })
+            callCount = 0
+            while callCount < len(self.players):
+                for player in self.players:
+                    if player.folded:
+                        continue
+                    move = player.makeMove(self.visibleCards, currentBet, self.potValue, self.betHistory)
+                    if move[0] == "fold":
+                        callCount += 1
+                        continue
+                    elif move[0] == "raise":
+                        callCount = 0
+                        currentBet = move[1]
+                        self.potValue += move[1]
+                    else:
+                        callCount += 1
+                        self.potValue += move[1]
+                    self.betHistory.append({
+                        "id": player.getID(),
+                        "move": move[0],
+                        "currentBet": currentBet,
+                        "potValue": self.potValue
+                    })
             if len(self.visibleCards) < 5:
                 self.addVisibleCard()
             else:
