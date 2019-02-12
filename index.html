@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Texas Holdem Poker AI</title>
+  </head>
+  <body style="display:flex; justify-content:center; align-items:center; min-height: 100vh;">
+    <section style="width:50%; height:50%; background-color:lightgrey; text-align: center; padding: 15px;">
+      <img src="pokerAI.png" style="width:100%;">
+      <h1>Poker AI</h1>
+      <p>For the first project I created a full-fledged Texas Holdem Poker AI. Perhaps the hardest part of this task was creating the hand evaluator. Poker hands do not follow a ruling system that lends itself easy to numerical assignment. For example, a four of a kind is always better than a full house, by a four of a kind with Aces is much better than a four of a kind with 2s. In order to correct for this non-mathematical heuristic, I created a numerical system that assigned points on the order of the 10,000s for each increasingly better hand (ie. royal flush, straight flush, four of a kind, ...) and then a system that incremented on the order of 10s for same-hand comparison. This way, if two players both got a three of a kind, the three of a kind with a higher face value would be the winner.
+
+        <br/><br/>Once this hand evaluation class was completed (and painfully debugged), it was simply a matter of creating a game container class that could keep track of the state of the game and record the result. Then, a match making environment was created to handle pairing multiple games of players. At this point, I could play multiple games of poker against multiple human users, but I still needed an AI. While I could have delved much further into the complexity of the AI I created, I settled for one that used 7 key weights to determine what move it would make. To keep things simple, I hardcoded these weights for one AI player and had them randomly generated for the others. For this to be a true evolutionary-learning AI, the next step would be to evolve these weights through generations and tournament style training. However, the way I currently have set up represents a fixed generation of the AI playing against 2 other random generations and winning the majority of games (most of the time).</p>
+
+      <div style="text-align: left; width: 50%; margin-left:30%;">
+        <b>Features:</b>
+        <ul>
+          <li>Human vs Human</li>
+          <li>Human vs AI</li>
+          <li>AI vs AI</li>
+          <li>No limit on number of players</li>
+          <li>Hands evaluated based on actual Texas Holdem rules</li>
+          <li>Tournament style bracketing</li>
+          <li>AI uses 7 weights</li>
+          <li>Trained AI wins most games against random AI</li>
+        </ul>
+      </div>
+    </section>
+  </body>
+</html>
