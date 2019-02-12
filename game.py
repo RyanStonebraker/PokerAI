@@ -1,6 +1,7 @@
 import itertools
 import random
 from player import Player
+from handevaluator import HandEvaluator
 
 class Game:
     def __init__(self, *players):
@@ -65,10 +66,13 @@ class Game:
             if playerScore > topScore:
                 topScore = playerScore
                 winner = player.getID()
+        return winner
 
     def evaluateHand(self, player):
-        # TODO: Evaluate a single poker hand
-        return 5
+        evaluator = HandEvaluator(player.cards, self.visibleCards)
+        score = evaluator.evaluateHand()
+        print(score)
+        return score
 
     stillBetting = True
     players = []

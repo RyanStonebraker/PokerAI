@@ -2,34 +2,52 @@ class HandEvaluator:
     def __init__(self, hand, visibleCards):
         self.cards = []
         self.cardOrder = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2']
-        for card in hand:
-            self.cards.append(card)
+        self.cards.append(hand[0][0])
+        self.cards.append(hand[0][1])
         for card in visibleCards:
             self.cards.append(card)
 
-        self.cards.sort(key=lambda x: x[-1] + x[:-1])
+        self.cards.sort(key=lambda x: str(x[-1] + x[:-1]))
 
     def evaluateHand(self):
+        handValue = -1
         isRoyalFlush, handValue = self.checkRoyalFlush()
-        if not isRoyalFlush:
-            isStraightFlush, handValue = self.checkStraightFlush()
-        elif not isStraightFlush:
-            isFourOfAKind, handValue = self.checkFourKind()
-        elif not isFourOfAKind:
-            isFullHouse, handValue = self.checkFullHouse()
-        elif not isFullHouse:
-            isFlush, handValue = self.checkFlush()
-        elif not isFlush:
-            isStraight, handValue = self.checkStraight()
-        elif not isStraight:
-            isThreeOfKind, handValue = self.checkThreeKind()
-        elif not isThreeOfKind:
-            isTwoPair, handValue = self.checkTwoPair()
-        elif not isTwoPair:
-            isPair, handValue = self.checkPair()
-        elif not isPair:
-            handValue = self.findHighestCard()
-        return handValue
+        if isRoyalFlush:
+            return handValue
+
+        isStraightFlush, handValue = self.checkStraightFlush()
+        if isStraightFlush:
+            return handValue
+
+        isFourOfAKind, handValue = self.checkFourKind()
+        if isFourOfAKind:
+            return handValue
+
+        isFullHouse, handValue = self.checkFullHouse()
+        if isFullHouse:
+            return handValue
+
+        isFlush, handValue = self.checkFlush()
+        if isFlush:
+            return handValue
+
+        isStraight, handValue = self.checkStraight()
+        if isStraight:
+            return handValue
+
+        isThreeOfKind, handValue = self.checkThreeKind()
+        if isThreeOfKind:
+            return handValue
+
+        isTwoPair, handValue = self.checkTwoPair()
+        if isTwoPair:
+            return handValue
+
+        isPair, handValue = self.checkPair()
+        if isPair:
+            return handValue
+
+        return self.findHighestCard()
 
     def checkSequence(self, needed):
         suite = ""
@@ -96,10 +114,12 @@ class HandEvaluator:
                 cardFace = card[:-1]
                 cardPlacementIndex = self.cardOrder.index(cardFace)
                 sequence = self.cardOrder[cardPlacementIndex:cardPlacementIndex+5]
-                isStraightFlush = self.checkSequence(sequence)
+                if len(sequence) == 5:
+                    isStraightFlush = self.checkSequence(sequence)
+                else:
+                    isStraightFlush = False
                 if isStraightFlush:
                     return (isStraightFlush, 90000 + (len(self.cardOrder) - cardPlacementIndex) * 100)
-
         return (False, 0)
 
 
@@ -136,6 +156,7 @@ class HandEvaluator:
                     if kindCount >= 3:
                         if not threeKindFound:
                             threeKind = cardFace
+                            threeKindFound = True
                             if pairFound:
                                 if pair == threeKind:
                                     pair = ""
@@ -147,12 +168,13 @@ class HandEvaluator:
                         pair = cardFace
                         if threeKindFound and threeKind != pair:
                             return (True, 70000 + (len(self.cardOrder) - self.cardOrder.index(threeKind)) * 100 + (len(self.cardOrder) - self.cardOrder.index(pair)))
+
         return (False, 0)
 
     def checkFlush(self):
         if len(self.cards) < 5:
             return (False, 0)
-        suiteCount = self.getHighestNumberOfSuites()
+        suiteCount = self.getHighestNumberOfSuites()[0]
         if suiteCount >= 5:
             highestCardVal = 0
             for card in self.cards:
@@ -166,16 +188,18 @@ class HandEvaluator:
             return (False, 0)
 
         for card in self.cards:
-            if card[-1] == highestSuite:
-                cardFace = card[:-1]
-                cardPlacementIndex = self.cardOrder.index(cardFace)
-                sequence = self.cardOrder[cardPlacementIndex:cardPlacementIndex+5]
+            cardFace = card[:-1]
+            cardPlacementIndex = self.cardOrder.index(cardFace)
+            sequence = self.cardOrder[cardPlacementIndex:cardPlacementIndex+5]
+            if (len(sequence) == 5):
                 isStraight = self.checkFaceSequence(sequence)
-                if isStraight:
-                    highestCardVal = 0
-                    for card in self.cards:
-                        highestCardVal = max(highestCardVal, (len(self.cardOrder) - self.cardOrder.index(cardFace)) * 10)
-                    return (isStraight, 50000 + highestCardVal)
+            else:
+                isStraight = False
+            if isStraight:
+                highestCardVal = 0
+                for card in self.cards:
+                    highestCardVal = max(highestCardVal, (len(self.cardOrder) - self.cardOrder.index(cardFace)) * 10)
+                return (isStraight, 50000 + highestCardVal)
         return (False, 0)
 
     def checkThreeKind(self):
@@ -191,6 +215,8 @@ class HandEvaluator:
                     kindCount += 1
                     if kindCount >= 3:
                         return (True, 40000 + (len(self.cardOrder) - self.cardOrder.index(cardFace)) * 100)
+
+        return (False, 0)
 
 
     def checkTwoPair(self):
@@ -234,5 +260,13 @@ class HandEvaluator:
     def findHighestCard(self):
         highestCardVal = 0
         for card in self.cards:
+            cardFace = card[:-1]
             highestCardVal = max(highestCardVal, 10000 + (len(self.cardOrder) - self.cardOrder.index(cardFace)) * 10)
         return highestCardVal
+
+
+# if __name__ == "__main__":
+#     hand = [('5C', '7D')]
+#     visibleCards = ['2C', '10D', '3H', '9S', '10C']
+#     eval = HandEvaluator(hand, visibleCards)
+#     print(eval.evaluateHand())
