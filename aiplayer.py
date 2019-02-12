@@ -1,4 +1,5 @@
 from baseplayer import BasePlayer
+from handevaluator import HandEvaluator
 
 class AIPlayer(BasePlayer):
     __init__(self, money):
@@ -8,7 +9,7 @@ class AIPlayer(BasePlayer):
         move = "call"
         inValue = currentBet if currentBet < self.money else self.money
 
-        
+
 
         self.money -= inValue
         return (move, inValue)

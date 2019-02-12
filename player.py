@@ -14,7 +14,7 @@ class Player(BasePlayer):
         print("My Money: ", self.money)
         print("Current Round Bet: ", currentBet)
         print("Total Pot Value: ", potValue)
-        # print("Bet History: ", betHistory)
+        print("Bet History: ", betHistory)
         move = input("Call, Raise, Fold: ").lower()
 
         if move == "fold":

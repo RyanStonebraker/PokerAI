@@ -33,6 +33,8 @@ class Game:
                     else:
                         callCount += 1
                         self.potValue += move[1]
+                        if callCount >= len(self.players):
+                            break
                     self.betHistory.append({
                         "id": player.getID(),
                         "move": move[0],
@@ -40,6 +42,7 @@ class Game:
                         "potValue": self.potValue
                     })
             if len(self.visibleCards) < 5:
+                self.betHistory = []
                 self.addVisibleCard()
             else:
                 winner = self.evaluateHands()
@@ -92,4 +95,4 @@ if __name__ == "__main__":
     player3 = Player(1000)
     pokerGame = Game(player1, player2, player3)
     winner = pokerGame.play()
-    print("\n\nWinner: Player", winner)
+    print("\n\nPlayer {0} won ${1}".format(winner, pokerGame.potValue))
