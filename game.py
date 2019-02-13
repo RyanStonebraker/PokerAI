@@ -8,6 +8,7 @@ class Game:
         self.players = players
         stillBetting = True
         self.potValue = 0
+        self.handEvalCount = 0
         self.possibleCards = [
             "AC", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C", "JC", "QC", "KC",
             "AD", "2D", "3D", "4D", "5D", "6D", "7D", "8D", "9D", "10D", "JD", "QD", "KD",
@@ -28,6 +29,7 @@ class Game:
                 for player in self.players:
                     if player.folded:
                         continue
+                    self.handEvalCount += 1
                     move = player.makeMove(self.visibleCards, currentBet, self.potValue, self.betHistory)
                     if move[0] == "fold":
                         callCount += 1
@@ -78,6 +80,7 @@ class Game:
         return winner
 
     def evaluateHand(self, player):
+        self.handEvalCount += 1
         evaluator = HandEvaluator(player.cards, self.visibleCards)
         score = evaluator.evaluateHand()
         return score
