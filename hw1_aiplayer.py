@@ -1,5 +1,5 @@
-from baseplayer import BasePlayer
-from handevaluator import HandEvaluator
+from hw1_baseplayer import BasePlayer
+from hw1_handevaluator import HandEvaluator
 
 import random
 

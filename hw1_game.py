@@ -1,7 +1,7 @@
 import itertools
 import random
-from player import Player
-from handevaluator import HandEvaluator
+from hw1_player import Player
+from hw1_handevaluator import HandEvaluator
 
 class Game:
     def __init__(self, *players):
@@ -41,14 +41,14 @@ class Game:
                     else:
                         callCount += 1
                         self.potValue += move[1]
-                        if callCount >= len(self.players):
-                            break
                     self.betHistory.append({
                         "id": player.getID(),
                         "move": move[0],
                         "currentBet": currentBet,
                         "potValue": self.potValue
                     })
+                    if callCount >= len(self.players):
+                        break
             if len(self.visibleCards) < 5:
                 self.betHistory = []
                 self.addVisibleCard()

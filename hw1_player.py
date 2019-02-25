@@ -1,4 +1,4 @@
-from baseplayer import BasePlayer
+from hw1_baseplayer import BasePlayer
 
 class Player(BasePlayer):
     def __init__(self, money):
