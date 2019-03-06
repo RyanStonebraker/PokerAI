@@ -4,6 +4,9 @@ class Player(BasePlayer):
     def __init__(self, money):
         super().__init__(money)
 
+    def printTypeInfo(self):
+        print("Human Player")
+
     def makeMove(self, visibleCards, currentBet, potValue, betHistory):
         move = "call"
         inValue = currentBet if currentBet < self.money else self.money

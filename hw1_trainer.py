@@ -6,7 +6,7 @@ from hw1_game import Game
 from hw1_player import Player
 from hw1_aiplayer import AIPlayer
 
-def generateRandomWeightSet():
+def generateRandomWeightSet(args):
     weights = {}
     weights["foldDecisionCardCount"] = random.randint(0, 4)
     weights["foldIfBetPercent"] = random.random()
@@ -15,6 +15,9 @@ def generateRandomWeightSet():
     weights["raiseQualityAtCards"] = random.randint(0, 4)
     weights["raisePercent"] = random.random()
     weights["valueQuality"] = random.random()
+    weights["sampleSize"] = random.randint(1, args.maxSampleSize)
+    weights["projectedMaxRisk"] = random.randint(10000, 100000)
+    weights["projectedAverageSafety"] = random.randint(10000, 100000)
     return weights
 
 def loadWeights(file):
@@ -26,19 +29,22 @@ def playSeries(args):
     totalPlayers = args.humanPlayers + args.aiPlayers
     playerStats = [{"wins": 0, "moneyWon": 0} for _ in range(totalPlayers)]
 
+    if args.trials == 1:
+        args.verbose = True
+
     totalHandsEval = 0
     startTime = time.time()
     for i in range(0, args.trials):
         players = []
         for aiPlayer in range(args.aiPlayers):
-            loadedWeights = loadWeights(args.weightFile[aiPlayer]) if args.weightFile and len(args.weightFile) > aiPlayer else generateRandomWeightSet()
+            loadedWeights = loadWeights(args.weightFile[aiPlayer]) if args.weightFile and len(args.weightFile) > aiPlayer else generateRandomWeightSet(args)
             ai = AIPlayer(args.startMoney, loadedWeights)
             players.append(ai)
         for humanPlayer in range(args.humanPlayers):
             player = Player(args.startMoney)
             players.append(player)
 
-        pokerGame = Game(*players)
+        pokerGame = Game(*players, verbose=args.verbose)
         winner = pokerGame.play()
         totalHandsEval += pokerGame.handEvalCount
         playerStats[winner]["wins"] += 1

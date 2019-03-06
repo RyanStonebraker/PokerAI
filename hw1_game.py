@@ -1,11 +1,13 @@
 import itertools
 import random
+
 from hw1_player import Player
 from hw1_handevaluator import HandEvaluator
 
 class Game:
-    def __init__(self, *players):
+    def __init__(self, *players, verbose=False):
         self.players = players
+        self.verbose = verbose
         stillBetting = True
         self.potValue = 0
         self.handEvalCount = 0
@@ -20,7 +22,11 @@ class Game:
         id = 0
         for player in self.players:
             player.getCards(self.dealTwoCards())
+            if self.verbose:
+                player.verbose = True
             player.assignID(id)
+            print("Player {0} - ".format(id), end="")
+            player.printTypeInfo()
             id += 1
         while self.stillBetting:
             currentBet = 10

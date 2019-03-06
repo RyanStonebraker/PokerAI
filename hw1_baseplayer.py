@@ -4,6 +4,7 @@ class BasePlayer:
         self.id = -1
         self.cards = []
         self.money = money
+        self.verbose = False
 
     def getID(self):
         return self.id

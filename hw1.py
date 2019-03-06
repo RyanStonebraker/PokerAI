@@ -12,6 +12,8 @@ def parse_cli():
     parser.add_argument('-s', '--logStats', action="store_true", help='Log statistics on game play.')
     parser.add_argument('-wF', '--weightFile', nargs="*", help='Location of weight file(s) for AI.')
     parser.add_argument('-m', '--startMoney', default=1000, type=int, help='Amount of money for each player at the start.')
+    parser.add_argument('-v', '--verbose', default=False, type=bool, help='Outputs searching info for each AI player. Default on for a single run.')
+    parser.add_argument('-mS', '--maxSampleSize', default=10000, type=int, help='Caps the randomly generated sample depth for AI agents.')
 
     args = parser.parse_args()
     return args
