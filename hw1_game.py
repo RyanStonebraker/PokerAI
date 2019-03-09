@@ -18,15 +18,16 @@ class Game:
             "AS", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS"
         ]
 
-    def play(self):
+    def play(self, trial=0):
         id = 0
         for player in self.players:
             player.getCards(self.dealTwoCards())
             if self.verbose:
                 player.verbose = True
             player.assignID(id)
-            print("Player {0} - ".format(id), end="")
-            player.printTypeInfo()
+            if trial == 0:
+                print("Player {0} - ".format(id), end="")
+                player.printTypeInfo()
             id += 1
         while self.stillBetting:
             currentBet = 10

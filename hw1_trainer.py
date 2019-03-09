@@ -34,10 +34,15 @@ def playSeries(args):
 
     totalHandsEval = 0
     startTime = time.time()
+
+    aiWeights = []
+    for aiPlayer in range(args.aiPlayers):
+        loadedWeights = loadWeights(args.weightFile[aiPlayer]) if args.weightFile and len(args.weightFile) > aiPlayer else generateRandomWeightSet(args)
+        aiWeights.append(loadedWeights)
     for i in range(0, args.trials):
         players = []
         for aiPlayer in range(args.aiPlayers):
-            loadedWeights = loadWeights(args.weightFile[aiPlayer]) if args.weightFile and len(args.weightFile) > aiPlayer else generateRandomWeightSet(args)
+            loadedWeights = aiWeights[aiPlayer]
             ai = AIPlayer(args.startMoney, loadedWeights)
             players.append(ai)
         for humanPlayer in range(args.humanPlayers):
@@ -45,7 +50,7 @@ def playSeries(args):
             players.append(player)
 
         pokerGame = Game(*players, verbose=args.verbose)
-        winner = pokerGame.play()
+        winner = pokerGame.play(trial=i)
         totalHandsEval += pokerGame.handEvalCount
         playerStats[winner]["wins"] += 1
         playerStats[winner]["moneyWon"] += pokerGame.potValue
