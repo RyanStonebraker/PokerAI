@@ -8,6 +8,7 @@ class AIPlayer(BasePlayer):
     def __init__(self, money, weights):
         super().__init__(money)
         self.weights = weights
+        self.handEvalCount = 0
 
     def printTypeInfo(self):
         pp = pprint.PrettyPrinter(indent=4)
@@ -22,6 +23,7 @@ class AIPlayer(BasePlayer):
         currentHand.verbose = self.verbose
         currentHandQuality = currentHand.evaluateHand()
         projectedHandMaxQuality, projectedHandAvgQuality = currentHand.findBestPossibleHand(self.weights["sampleSize"])
+        self.handEvalCount += currentHand.handEvalCount
 
         varyingChoice = random.random()
         if len(visibleCards) > self.weights["foldDecisionCardCount"] and currentBet > self.weights["foldIfBetPercent"] * self.money and varyingChoice < self.weights["foldPercent"]:

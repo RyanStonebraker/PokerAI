@@ -14,6 +14,7 @@ def parse_cli():
     parser.add_argument('-m', '--startMoney', default=1000, type=int, help='Amount of money for each player at the start.')
     parser.add_argument('-v', '--verbose', default=False, type=bool, help='Outputs searching info for each AI player. Default on for a single run.')
     parser.add_argument('-mS', '--maxSampleSize', default=10000, type=int, help='Caps the randomly generated sample depth for AI agents.')
+    parser.add_argument('-rr', '--regenerateRandom', action="store_true", help='Regenerates random weights every trial instead of using one set of random weights generated at the start.')
 
     args = parser.parse_args()
     return args

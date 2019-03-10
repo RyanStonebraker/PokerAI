@@ -1,9 +1,0 @@
-{
-  "foldDecisionCardCount": 3,
-  "foldIfBetPercent": 0.8,
-  "foldPercent": 0.1,
-  "raiseQuality": 50000,
-  "raiseQualityAtCards": 2,
-  "raisePercent": 0.7,
-  "valueQuality": 0.6
-}

@@ -1,0 +1,12 @@
+{
+  "foldDecisionCardCount": 1,
+  "foldIfBetPercent": 0.01,
+  "foldPercent": 0.01,
+  "projectedAverageSafety": 85182,
+  "projectedMaxRisk": 80000,
+  "raisePercent": 0.23162919553624894,
+  "raiseQuality": 80000,
+  "raiseQualityAtCards": 1,
+  "sampleSize": 50,
+  "valueQuality": 0.2677500725545293
+}

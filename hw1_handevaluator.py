@@ -5,6 +5,7 @@ class HandEvaluator:
         self.cards = []
         self.verbose = False
         self.cardOrder = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2']
+        self.handEvalCount = 0
         if visibleCards is not None:
             self.cards.append(hand[0][0])
             self.cards.append(hand[0][1])
@@ -16,6 +17,7 @@ class HandEvaluator:
         self.cards.sort(key=lambda x: str(x[-1] + x[:-1]))
 
     def evaluateHand(self):
+        self.handEvalCount += 1
         handValue = -1
         evalOrder = [
             self.checkRoyalFlush,
@@ -377,6 +379,7 @@ class HandEvaluator:
 
         potentialHand = HandEvaluator(hand)
         handStrength = potentialHand.evaluateHand()
+        self.handEvalCount += potentialHand.handEvalCount
         return handStrength
 
     def findBestPossibleHand(self, sampleSize, hand=None):

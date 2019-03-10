@@ -36,13 +36,17 @@ def playSeries(args):
     startTime = time.time()
 
     aiWeights = []
-    for aiPlayer in range(args.aiPlayers):
-        loadedWeights = loadWeights(args.weightFile[aiPlayer]) if args.weightFile and len(args.weightFile) > aiPlayer else generateRandomWeightSet(args)
-        aiWeights.append(loadedWeights)
+    if not args.regenerateRandom:
+        for aiPlayer in range(args.aiPlayers):
+            loadedWeights = loadWeights(args.weightFile[aiPlayer]) if args.weightFile and len(args.weightFile) > aiPlayer else generateRandomWeightSet(args)
+            aiWeights.append(loadedWeights)
     for i in range(0, args.trials):
         players = []
         for aiPlayer in range(args.aiPlayers):
-            loadedWeights = aiWeights[aiPlayer]
+            if not args.regenerateRandom:
+                loadedWeights = aiWeights[aiPlayer]
+            else:
+                loadedWeights = loadWeights(args.weightFile[aiPlayer]) if args.weightFile and len(args.weightFile) > aiPlayer else generateRandomWeightSet(args)
             ai = AIPlayer(args.startMoney, loadedWeights)
             players.append(ai)
         for humanPlayer in range(args.humanPlayers):

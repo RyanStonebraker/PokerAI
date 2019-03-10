@@ -3,6 +3,7 @@ from hw1_baseplayer import BasePlayer
 class Player(BasePlayer):
     def __init__(self, money):
         super().__init__(money)
+        self.handEvalCount = 0
 
     def printTypeInfo(self):
         print("Human Player")
@@ -37,4 +38,5 @@ class Player(BasePlayer):
             inValue = raiseAmt
 
         self.money -= inValue
+        self.handEvalCount += 1
         return (move, inValue)

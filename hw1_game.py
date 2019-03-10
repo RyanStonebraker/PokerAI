@@ -36,8 +36,8 @@ class Game:
                 for player in self.players:
                     if player.folded:
                         continue
-                    self.handEvalCount += 1
                     move = player.makeMove(self.visibleCards, currentBet, self.potValue, self.betHistory)
+                    self.handEvalCount += player.handEvalCount
                     if move[0] == "fold":
                         callCount += 1
                         continue
@@ -87,9 +87,9 @@ class Game:
         return winner
 
     def evaluateHand(self, player):
-        self.handEvalCount += 1
         evaluator = HandEvaluator(player.cards, self.visibleCards)
         score = evaluator.evaluateHand()
+        self.handEvalCount += evaluator.handEvalCount
         return score
 
     stillBetting = True
